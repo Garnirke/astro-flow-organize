@@ -1,73 +1,117 @@
-# Welcome to your Lovable project
 
-## Project info
+# AstroNote
 
-**URL**: https://lovable.dev/projects/db7800ad-1e4a-42bc-8d67-2cd771ee42bc
+AstroNote is a modern productivity app that helps individuals and teams organize notes, tasks, and schedules in one place. Designed with a clean, futuristic UI and soft purple accents, AstroNote empowers you to think better and collaborate smarter.
 
-## How can I edit this code?
+## ✨ Purpose
 
-There are several ways of editing your application.
+AstroNote brings together notes, tasks, schedules, and collaboration in a single platform. Effortlessly manage personal and team workflows with folders, tags, voice memos, media organization, and robust permissions.
 
-**Use Lovable**
+## 🚀 Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/db7800ad-1e4a-42bc-8d67-2cd771ee42bc) and start prompting.
+- **Organize effortlessly:** Folder & tag management, iOS-inspired lists  
+- **Notes, voice memos, images:** Keep everything in one place  
+- **Smart collaboration:** Team permissions, task assignments, comments  
+- **Secure:** Global security, 3D spinning globe visualization, API & data protection  
+- **Mobile friendly:** Responsive UI, mobile mockups  
+- **Minimalist analytics dashboard**
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- [Node.js](https://nodejs.org/) (v18 or newer recommended)
+- npm v9+ or yarn/pnpm
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Setup
 
-Follow these steps:
-
+Clone the repository:
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Install dependencies:
+```sh
+npm install
+# or yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Start the development server:
+```sh
+npm run dev
+# or yarn dev
+```
 
-**Use GitHub Codespaces**
+### Build for production
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```sh
+npm run build
+npm run preview
+```
 
-## What technologies are used for this project?
+### Running Tests
 
-This project is built with:
+Unit and integration tests are powered by [Vitest](https://vitest.dev/):
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```sh
+npm run test
+```
 
-## How can I deploy this project?
+## 🧪 Testing Guidelines
 
-Simply open [Lovable](https://lovable.dev/projects/db7800ad-1e4a-42bc-8d67-2cd771ee42bc) and click on Share -> Publish.
+- All tests live in the `src/__tests__` directory and use the `.test.ts(x)` naming convention.
+- Use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for component behavior.
+- Place integration/end-to-end tests in `src/__tests__/integration`, if needed.
 
-## Can I connect a custom domain to my Lovable project?
+## 🤝 Contributing
 
-Yes, you can!
+Thank you for considering contributing! To help us maintain high quality, follow these simple guidelines:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Fork this repo and create a feature branch.
+2. Write/modify code following our style and structure.
+3. Include tests if applicable.
+4. Run `npm run test` and ensure all checks pass.
+5. Open a pull request with clear description and any relevant screenshots.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+#### Issue and PR templates
+
+We encourage detailed [issues](#) (bug reports/feature requests) and pull requests. Please fill out the provided template for clarity.
+
+## 📖 Usage
+
+After registration/login, access the dashboard to create folders, write notes, record voice memos, or assign tasks. See the demo for team workflows.
+
+- To switch between personal and team views, use the sidebar folder navigation.
+- Click "New Note" to create rich text notes or attach media/voice.
+
+## ⚡ Roadmap
+
+- [x] Landing page and marketing site
+- [x] Core dashboard: notes, folders, tasks, analytics
+- [ ] Real-time team collaboration
+- [ ] Calendar integration & smart reminders
+- [ ] Mobile app (iOS/Android)
+- [ ] Plugin/API marketplace
+
+## 💡 Accessibility
+
+AstroNote is designed to meet accessibility standards (WCAG 2.1). Please open an issue if you encounter barriers.
+
+## 🛡️ Security
+
+- Uses Supabase for authentication and backend – keys are managed through environment variables.
+- Follows best practices: never commit sensitive credentials.  
+- For further improvements: implement granular API tokens, review 3rd-party dependencies, and enable HTTPS in production.
+
+## 🌎 Community
+
+Join our Discord community at [https://discord.gg/lovable](https://discord.gg/lovable)  
+Have a feature idea? Open an [issue](#)!
+
+---
+
+## License
+
+MIT
+

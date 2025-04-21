@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/sonner";
 
 type Note = {
   id: string;
@@ -24,9 +25,21 @@ const fetchNotes = async (): Promise<Note[]> => {
 };
 
 const insertNote = async (note: { title: string; content: string }) => {
+  // Get the current user
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  
   const { data, error } = await supabase
     .from("notes")
-    .insert([note]);
+    .insert({
+      title: note.title,
+      content: note.content,
+      user_id: user.id
+    });
+    
   if (error) throw error;
   return data;
 };
@@ -47,7 +60,11 @@ const Notes = () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       setTitle("");
       setContent("");
+      toast.success("Note added successfully");
     },
+    onError: (error) => {
+      toast.error(`Failed to add note: ${error.message}`);
+    }
   });
 
   const handleAddNote = (e: React.FormEvent) => {

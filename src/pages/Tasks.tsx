@@ -22,14 +22,15 @@ const Tasks = () => {
 
   const fetchTasks = async (userId: string): Promise<Task[]> => {
     try {
-      // Use type assertion to bypass TypeScript error
+      // Use type assertion to bypass TypeScript error since database schema isn't fully typed
       const { data, error } = await supabase
         .from("tasks" as any)
         .select("*")
         .eq("user_id", userId)
         .order("id", { ascending: false });
       if (error) throw error;
-      return (data || []) as Task[];
+      // Add explicit type assertion with unknown as intermediate step
+      return ((data || []) as unknown) as Task[];
     } catch (error: any) {
       console.error("Error fetching tasks:", error.message);
       return [];

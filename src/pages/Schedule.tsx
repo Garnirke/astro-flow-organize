@@ -23,14 +23,15 @@ const Schedule = () => {
 
   const fetchEvents = async (userId: string): Promise<Event[]> => {
     try {
-      // Use type assertion to bypass TypeScript error
+      // Use type assertion to bypass TypeScript error since database schema isn't fully typed
       const { data, error } = await supabase
         .from("events" as any)
         .select("*")
         .eq("user_id", userId)
         .order("date", { ascending: false });
       if (error) throw error;
-      return (data || []) as Event[];
+      // Add explicit type assertion with unknown as intermediate step
+      return ((data || []) as unknown) as Event[];
     } catch (error: any) {
       console.error("Error fetching events:", error.message);
       return [];

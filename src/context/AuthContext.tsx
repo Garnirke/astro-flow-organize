@@ -39,6 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = async (id: string) => {
     if (!id) { setProfile(null); return; }
     try {
+      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
       const { data, error } = await supabase
         .from("profiles")
         .select("*")

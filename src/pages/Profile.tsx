@@ -19,6 +19,7 @@ const Profile = () => {
     setLoading(true);
     
     try {
+      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
       const { error } = await supabase
         .from("profiles")
         .update({

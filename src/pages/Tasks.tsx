@@ -1,35 +1,84 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/sonner";
+import { useNavigate } from "react-router-dom";
 
-// Sample in-memory tasks; DB will be implemented later
 type Task = {
   id: string;
   title: string;
   done: boolean;
+  user_id: string;
+};
+
+const fetchTasks = async (userId: string): Promise<Task[]> => {
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("user_id", userId)
+    .order("id", { ascending: false });
+  if (error) throw error;
+  return data || [];
+};
+
+const insertTask = async (task: { title: string; user_id: string }) => {
+  const { data, error } = await supabase
+    .from("tasks")
+    .insert({ title: task.title, done: false, user_id: task.user_id });
+  if (error) throw error;
+  return data;
+};
+
+const toggleTaskApi = async (taskId: string, done: boolean) => {
+  const { error } = await supabase
+    .from("tasks")
+    .update({ done })
+    .eq("id", taskId);
+  if (error) throw error;
 };
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState("");
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
-  const addTask = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    } else if (user) {
+      fetchTasks(user.id).then(setTasks).catch(() => setTasks([]));
+    }
+    // eslint-disable-next-line
+  }, [user, loading]);
+
+  const addTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title) return;
-    setTasks([
-      ...tasks,
-      { id: Date.now().toString(), title, done: false }
-    ]);
-    setTitle("");
+    if (!title || !user) return;
+    try {
+      await insertTask({ title, user_id: user.id });
+      const updated = await fetchTasks(user.id);
+      setTasks(updated);
+      setTitle("");
+      toast.success("Task added");
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
-  const toggleTask = (id: string) => {
-    setTasks(tasks =>
-      tasks.map(task =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
-    );
+  const toggleTask = async (id: string) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task || !user) return;
+    try {
+      await toggleTaskApi(id, !task.done);
+      const updated = await fetchTasks(user.id);
+      setTasks(updated);
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
   return (

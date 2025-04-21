@@ -1,11 +1,13 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 type Note = {
   id: string;
@@ -15,31 +17,24 @@ type Note = {
   updated_at: string;
 };
 
-const fetchNotes = async (): Promise<Note[]> => {
+const fetchNotes = async (userId: string): Promise<Note[]> => {
   const { data, error } = await supabase
     .from("notes")
     .select("*")
+    .eq("user_id", userId)
     .order("updated_at", { ascending: false });
   if (error) throw error;
   return data || [];
 };
 
-const insertNote = async (note: { title: string; content: string }) => {
-  // Get the current user
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) {
-    throw new Error("User not authenticated");
-  }
-  
+const insertNote = async (note: { title: string; content: string; user_id: string }) => {
   const { data, error } = await supabase
     .from("notes")
     .insert({
       title: note.title,
       content: note.content,
-      user_id: user.id
+      user_id: note.user_id
     });
-    
   if (error) throw error;
   return data;
 };
@@ -48,21 +43,31 @@ const Notes = () => {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
 
   const { data: notes, isLoading, error } = useQuery({
-    queryKey: ["notes"],
-    queryFn: fetchNotes,
+    queryKey: ["notes", user?.id],
+    queryFn: () => user ? fetchNotes(user.id) : Promise.resolve([]),
+    enabled: !!user,
   });
 
   const addNoteMutation = useMutation({
-    mutationFn: insertNote,
+    mutationFn: (variables: { title: string; content: string }) =>
+      insertNote({ ...variables, user_id: user?.id ?? "" }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ["notes", user?.id] });
       setTitle("");
       setContent("");
       toast.success("Note added successfully");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(`Failed to add note: ${error.message}`);
     }
   });

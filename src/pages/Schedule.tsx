@@ -1,29 +1,67 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/sonner";
+import { useNavigate } from "react-router-dom";
 
-// In-memory schedule event model, ready for DB
 type Event = {
   id: string;
   title: string;
   date: string;
+  user_id: string;
+};
+
+const fetchEvents = async (userId: string): Promise<Event[]> => {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("user_id", userId)
+    .order("date", { ascending: false });
+  if (error) throw error;
+  return data || [];
+};
+
+const insertEvent = async (event: { title: string; date: string; user_id: string }) => {
+  const { data, error } = await supabase
+    .from("events")
+    .insert({ title: event.title, date: event.date, user_id: event.user_id });
+  if (error) throw error;
+  return data;
 };
 
 const Schedule = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
-  const addEvent = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+      return;
+    }
+    if (!user) return;
+    fetchEvents(user.id).then(setEvents).catch(() => setEvents([]));
+    // eslint-disable-next-line
+  }, [user, loading]);
+
+  const addEvent = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !date) return;
-    setEvents([
-      ...events,
-      { id: Date.now().toString(), title, date }
-    ]);
-    setTitle("");
-    setDate("");
+    if (!title || !date || !user) return;
+    try {
+      await insertEvent({ title, date, user_id: user.id });
+      const updated = await fetchEvents(user.id);
+      setEvents(updated);
+      setTitle("");
+      setDate("");
+      toast.success("Event added");
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
   return (

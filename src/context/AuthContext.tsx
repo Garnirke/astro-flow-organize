@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
-import { Tables } from "@/integrations/supabase/types";
 
 interface Profile {
   id: string;
@@ -11,6 +10,7 @@ interface Profile {
   created_at: string;
   updated_at: string;
 }
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -38,12 +38,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Helper to load the profile for the current user
   const fetchProfile = async (id: string) => {
     if (!id) { setProfile(null); return; }
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", id)
-      .single();
-    setProfile(data ?? null);
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", id)
+        .single();
+        
+      if (error) throw error;
+      setProfile(data as Profile);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      setProfile(null);
+    }
   };
 
   // Handle supabase session auth state changes

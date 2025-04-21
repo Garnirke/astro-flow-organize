@@ -17,38 +17,51 @@ const Profile = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        username,
-        avatar_url: avatarUrl
-      })
-      .eq("id", user.id);
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success("Profile updated");
-      await refreshProfile();
+    
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          username,
+          avatar_url: avatarUrl
+        })
+        .eq("id", user.id);
+        
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Profile updated");
+        await refreshProfile();
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Error updating profile");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 glass-card p-6">
       <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Username"
-          placeholder="Username"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-        <Input
-          label="Avatar URL"
-          placeholder="Avatar image url"
-          value={avatarUrl}
-          onChange={e => setAvatarUrl(e.target.value)}
-        />
+        <div>
+          <label className="text-sm font-medium" htmlFor="username">Username</label>
+          <Input
+            id="username"
+            placeholder="Username"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="text-sm font-medium" htmlFor="avatar">Avatar URL</label>
+          <Input
+            id="avatar"
+            placeholder="Avatar image url"
+            value={avatarUrl}
+            onChange={e => setAvatarUrl(e.target.value)}
+          />
+        </div>
         <Button type="submit" disabled={loading}>{loading ? "Saving..." : "Save"}</Button>
       </form>
     </div>

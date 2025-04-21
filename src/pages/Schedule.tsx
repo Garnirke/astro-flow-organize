@@ -14,30 +14,27 @@ type Event = {
   user_id: string;
 };
 
-const fetchEvents = async (userId: string): Promise<Event[]> => {
-  const { data, error } = await supabase
-    .from("events")
-    .select("*")
-    .eq("user_id", userId)
-    .order("date", { ascending: false });
-  if (error) throw error;
-  return data || [];
-};
-
-const insertEvent = async (event: { title: string; date: string; user_id: string }) => {
-  const { data, error } = await supabase
-    .from("events")
-    .insert({ title: event.title, date: event.date, user_id: event.user_id });
-  if (error) throw error;
-  return data;
-};
-
 const Schedule = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+
+  const fetchEvents = async (userId: string): Promise<Event[]> => {
+    try {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("user_id", userId)
+        .order("date", { ascending: false });
+      if (error) throw error;
+      return (data || []) as Event[];
+    } catch (error: any) {
+      console.error("Error fetching events:", error.message);
+      return [];
+    }
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -53,7 +50,9 @@ const Schedule = () => {
     e.preventDefault();
     if (!title || !date || !user) return;
     try {
-      await insertEvent({ title, date, user_id: user.id });
+      await supabase
+        .from("events")
+        .insert({ title, date, user_id: user.id });
       const updated = await fetchEvents(user.id);
       setEvents(updated);
       setTitle("");

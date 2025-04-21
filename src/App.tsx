@@ -16,7 +16,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/notes" element={lazy(() => import('./pages/Notes'))} />
+          <Route path="/tasks" element={lazy(() => import('./pages/Tasks'))} />
+          <Route path="/schedule" element={lazy(() => import('./pages/Schedule'))} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

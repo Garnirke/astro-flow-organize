@@ -39,15 +39,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = async (id: string) => {
     if (!id) { setProfile(null); return; }
     try {
-      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
+      // Use type assertion to bypass TypeScript error since database schema isn't fully typed
       const { data, error } = await supabase
-        .from("profiles")
+        .from("profiles" as any)
         .select("*")
         .eq("id", id)
         .single();
         
       if (error) throw error;
-      setProfile(data as Profile);
+      // Type assertion to match our Profile interface
+      setProfile(data as unknown as Profile);
     } catch (error) {
       console.error("Error fetching profile:", error);
       setProfile(null);

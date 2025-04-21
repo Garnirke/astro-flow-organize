@@ -23,9 +23,9 @@ const Schedule = () => {
 
   const fetchEvents = async (userId: string): Promise<Event[]> => {
     try {
-      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
+      // Use type assertion to bypass TypeScript error
       const { data, error } = await supabase
-        .from("events")
+        .from("events" as any)
         .select("*")
         .eq("user_id", userId)
         .order("date", { ascending: false });
@@ -51,10 +51,10 @@ const Schedule = () => {
     e.preventDefault();
     if (!title || !date || !user) return;
     try {
-      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
+      // Use type assertion to bypass TypeScript error
       await supabase
-        .from("events")
-        .insert({ title, date, user_id: user.id });
+        .from("events" as any)
+        .insert({ title, date, user_id: user.id } as any);
       const updated = await fetchEvents(user.id);
       setEvents(updated);
       setTitle("");

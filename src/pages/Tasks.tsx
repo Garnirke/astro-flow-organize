@@ -22,9 +22,9 @@ const Tasks = () => {
 
   const fetchTasks = async (userId: string): Promise<Task[]> => {
     try {
-      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
+      // Use type assertion to bypass TypeScript error
       const { data, error } = await supabase
-        .from("tasks")
+        .from("tasks" as any)
         .select("*")
         .eq("user_id", userId)
         .order("id", { ascending: false });
@@ -49,10 +49,10 @@ const Tasks = () => {
     e.preventDefault();
     if (!title || !user) return;
     try {
-      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
+      // Use type assertion to bypass TypeScript error
       await supabase
-        .from("tasks")
-        .insert({ title, done: false, user_id: user.id });
+        .from("tasks" as any)
+        .insert({ title, done: false, user_id: user.id } as any);
       const updated = await fetchTasks(user.id);
       setTasks(updated);
       setTitle("");
@@ -66,10 +66,10 @@ const Tasks = () => {
     const task = tasks.find(t => t.id === id);
     if (!task || !user) return;
     try {
-      // Using any type to bypass the TypeScript error since the database schema isn't fully defined
+      // Use type assertion to bypass TypeScript error
       await supabase
-        .from("tasks")
-        .update({ done: !task.done })
+        .from("tasks" as any)
+        .update({ done: !task.done } as any)
         .eq("id", id);
       const updated = await fetchTasks(user.id);
       setTasks(updated);

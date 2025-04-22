@@ -39,16 +39,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = async (id: string) => {
     if (!id) { setProfile(null); return; }
     try {
-      // Use type assertion to bypass TypeScript error since database schema isn't fully typed
       const { data, error } = await supabase
-        .from("profiles" as any)
-        .select("*")
-        .eq("id", id)
+        .from('profiles')
+        .select('*')
+        .eq('id', id)
         .single();
         
       if (error) throw error;
-      // Type assertion to match our Profile interface
-      setProfile(data as unknown as Profile);
+      setProfile(data);
     } catch (error) {
       console.error("Error fetching profile:", error);
       setProfile(null);
@@ -67,6 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       }
     });
+
     // Initial load
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
@@ -76,6 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       setLoading(false);
     });
+
     return () => {
       subscription.unsubscribe();
     };
@@ -84,10 +84,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // When user changes, refresh profile
   useEffect(() => {
     if (user) fetchProfile(user.id);
-    // eslint-disable-next-line
   }, [user]);
 
-  // Helper for signout
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);

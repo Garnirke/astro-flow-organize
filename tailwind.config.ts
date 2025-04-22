@@ -66,6 +66,7 @@ export default {
           card: "#1A1F2C",
           card2: "#221F26",
           background: "#0F0F1A",
+          text: "#E0E0E0",
         },
       },
       borderRadius: {

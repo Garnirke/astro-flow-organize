@@ -7,19 +7,19 @@
     --background: 240 25% 5%;
     --foreground: 240 10% 95%;
     --card: 240 25% 10%;
-    --card-foreground: 240 10% 95%;
+    --card-foreground: 240 10% 90%;
     
     --popover: 240 25% 12%;
-    --popover-foreground: 240 10% 95%;
+    --popover-foreground: 240 10% 90%;
 
     --primary: 273 58% 64%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 15% 15%;
-    --secondary-foreground: 240 10% 95%;
+    --secondary-foreground: 240 10% 90%;
 
     --muted: 240 15% 20%;
-    --muted-foreground: 240 10% 70%;
+    --muted-foreground: 240 10% 75%;
 
     --accent: 273 58% 54%;
     --accent-foreground: 0 0% 100%;
@@ -69,17 +69,17 @@
   }
 
   .feature-card {
-    @apply bg-dark-card/70 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
-    border border-dark-card/30 hover:border-primary/20 backdrop-blur-sm;
+    @apply bg-dark-card/80 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
+    border border-dark-card/40 hover:border-primary/30 backdrop-blur-sm;
   }
 
   .pricing-card {
-    @apply bg-dark-card2/60 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
-    border border-dark-card/30 hover:border-primary/20 backdrop-blur-sm h-full;
+    @apply bg-dark-card2/70 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
+    border border-dark-card/40 hover:border-primary/30 backdrop-blur-sm h-full;
   }
 
   .glass-card {
-    @apply bg-card-transparent backdrop-blur-xl rounded-2xl shadow-lg border border-dark-card/30;
+    @apply bg-card-transparent backdrop-blur-xl rounded-2xl shadow-lg border border-dark-card/40;
   }
 }
 

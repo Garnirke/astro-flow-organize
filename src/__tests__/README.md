@@ -37,7 +37,25 @@ npm run test -- --watch
 2. **Integration Tests**: Test how components work together
 3. **Mock Dependencies**: Use Vitest's mocking capabilities for external dependencies
 4. **Test User Interactions**: Use `userEvent` for realistic user interactions
-5. **Accessibility Testing**: Include accessibility checks in your tests
+5. **Accessibility Testing**: Include accessibility checks in your tests using our custom `runA11yTest` utility
+
+## Accessibility Testing
+
+We use `axe-core` for accessibility testing. To test a component for accessibility issues:
+
+```typescript
+import { runA11yTest, formatViolations } from "@/test/a11y-helper";
+
+it("should have no accessibility violations", async () => {
+  const results = await runA11yTest(<YourComponent />);
+  
+  if (results.violations.length > 0) {
+    console.error(formatViolations(results));
+  }
+  
+  expect(results.violations.length).toBe(0);
+});
+```
 
 ## Best Practices
 
@@ -47,9 +65,11 @@ npm run test -- --watch
 - Write descriptive test names that explain what is being tested
 - Keep tests focused on one aspect of functionality
 - Use setup and teardown functions for common test setup
+- Always include accessibility tests for UI components
 
 ## Resources
 
 - [Vitest Documentation](https://vitest.dev/)
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - [Testing Library User Events](https://testing-library.com/docs/user-event/intro)
+- [axe-core Documentation](https://github.com/dequelabs/axe-core)

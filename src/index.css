@@ -4,25 +4,24 @@
 
 @layer base {
   :root {
-    --background: 240 25% 10%;
+    --background: 240 25% 5%;
     --foreground: 240 10% 95%;
-
-    --card: 240 25% 12%;
+    --card: 240 25% 10%;
     --card-foreground: 240 10% 95%;
-
+    
     --popover: 240 25% 12%;
     --popover-foreground: 240 10% 95%;
 
-    --primary: 273 58% 74%;
+    --primary: 273 58% 64%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 15% 20%;
+    --secondary: 240 15% 15%;
     --secondary-foreground: 240 10% 95%;
 
     --muted: 240 15% 20%;
     --muted-foreground: 240 10% 70%;
 
-    --accent: 273 58% 74%;
+    --accent: 273 58% 54%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -70,17 +69,17 @@
   }
 
   .feature-card {
-    @apply bg-card/50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
-    border border-border hover:border-primary/20 backdrop-blur-sm;
+    @apply bg-dark-card/70 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
+    border border-dark-card/30 hover:border-primary/20 backdrop-blur-sm;
   }
 
   .pricing-card {
-    @apply bg-card/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
-    border border-border hover:border-primary/20 backdrop-blur-sm h-full;
+    @apply bg-dark-card2/60 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
+    border border-dark-card/30 hover:border-primary/20 backdrop-blur-sm h-full;
   }
 
   .glass-card {
-    @apply bg-card/50 backdrop-blur-sm rounded-2xl shadow-lg border border-border;
+    @apply bg-card-transparent backdrop-blur-xl rounded-2xl shadow-lg border border-dark-card/30;
   }
 }
 

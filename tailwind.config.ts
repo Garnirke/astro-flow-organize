@@ -59,12 +59,23 @@ export default {
           "soft-blue": "#D3E4FD",
           "dark-purple": "#1A1F2C",
           gray: "#8E9196",
+          "dark-card": "#221F26",
+          "deep-purple": "#1A1F2C",
+        },
+        dark: {
+          card: "#1A1F2C",
+          card2: "#221F26",
+          background: "#0F0F1A",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      backgroundColor: {
+        "card-transparent": "rgba(26, 31, 44, 0.7)",
+        "card-transparent-light": "rgba(34, 31, 38, 0.5)",
       },
       keyframes: {
         "accordion-down": {

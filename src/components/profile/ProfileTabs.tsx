@@ -13,12 +13,13 @@ const tabs = [
 export function ProfileTabs({ children }: { children: React.ReactNode }) {
   return (
     <Tabs defaultValue="information" className="w-full">
-      <TabsList className="flex flex-wrap h-auto gap-2 bg-transparent">
+      <TabsList className="flex flex-wrap h-auto gap-2 bg-dark-card/30 backdrop-blur-sm">
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.value}
             value={tab.value}
-            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+            className="data-[state=active]:bg-primary data-[state=active]:text-white 
+            hover:bg-primary/10 transition-colors"
           >
             {tab.label}
           </TabsTrigger>

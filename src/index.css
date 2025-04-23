@@ -1,24 +1,67 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 240 25% 5%;
-    --foreground: 240 10% 95%;
-    --card: 240 25% 10%;
-    --card-foreground: 240 10% 90%;
-    
-    --popover: 240 25% 12%;
-    --popover-foreground: 240 10% 90%;
+    /* Light mode defaults */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 5%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 5%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 5%;
 
     --primary: 273 58% 64%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 15% 15%;
+    --secondary: 240 15% 95%;
+    --secondary-foreground: 240 10% 5%;
+
+    --muted: 240 15% 95%;
+    --muted-foreground: 240 10% 45%;
+
+    --accent: 273 58% 54%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 15% 90%;
+    --input: 240 15% 90%;
+    --ring: 273 58% 64%;
+
+    --radius: 1rem;
+
+    /* Custom dark colors (for dark mode only) */
+    --sidebar-background: 240 25% 10%;
+    --sidebar-foreground: 240 10% 80%;
+    --sidebar-primary: 273 58% 74%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 15% 20%;
+    --sidebar-accent-foreground: 240 10% 95%;
+    --sidebar-border: 240 15% 20%;
+    --sidebar-ring: 273 58% 74%;
+  }
+  .dark {
+    /* Dark Mode overrides */
+    --background: 240 15% 8%;
+    --foreground: 240 10% 95%;
+    --card: 266 33% 13%;
+    --card-foreground: 240 10% 95%;
+
+    --popover: 263 29% 14%;
+    --popover-foreground: 240 10% 96%;
+
+    --primary: 273 58% 64%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 266 16% 20%;
     --secondary-foreground: 240 10% 90%;
 
-    --muted: 240 15% 20%;
+    --muted: 266 15% 24%;
     --muted-foreground: 240 10% 75%;
 
     --accent: 273 58% 54%;
@@ -27,19 +70,19 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 15% 20%;
-    --input: 240 15% 20%;
+    --border: 266 16% 20%;
+    --input: 266 16% 20%;
     --ring: 273 58% 74%;
 
     --radius: 1rem;
 
-    --sidebar-background: 240 25% 8%;
+    --sidebar-background: 266 33% 13%;
     --sidebar-foreground: 240 10% 80%;
     --sidebar-primary: 273 58% 74%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 15% 20%;
+    --sidebar-accent: 266 16% 20%;
     --sidebar-accent-foreground: 240 10% 95%;
-    --sidebar-border: 240 15% 20%;
+    --sidebar-border: 266 16% 20%;
     --sidebar-ring: 273 58% 74%;
   }
 }
@@ -68,75 +111,20 @@
     @apply text-lg text-muted-foreground mb-8 max-w-2xl mx-auto;
   }
 
+  /* Always use bg-card for cards, which swaps dark/light for theme */
   .feature-card {
-    @apply bg-dark-card/80 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
-    border border-dark-card/40 hover:border-primary/30 backdrop-blur-sm;
+    @apply bg-card rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
+    border border-border hover:border-primary/30 backdrop-blur-sm;
   }
 
   .pricing-card {
-    @apply bg-dark-card2/70 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
-    border border-dark-card/40 hover:border-primary/30 backdrop-blur-sm h-full;
+    @apply bg-card rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
+    border border-border hover:border-primary/30 backdrop-blur-sm h-full;
   }
 
   .glass-card {
-    @apply bg-card-transparent backdrop-blur-xl rounded-2xl shadow-lg border border-dark-card/40;
+    @apply bg-card/80 backdrop-blur-xl rounded-2xl shadow-lg border border-border;
   }
 }
 
-@layer components {
-  .hero-button {
-    @apply bg-primary rounded-xl px-6 py-3 text-white font-medium
-    transition-all hover:shadow-lg hover:shadow-primary/30 hover:scale-105;
-  }
-
-  .section-title {
-    @apply text-3xl md:text-4xl font-bold text-foreground mb-4;
-  }
-  
-  .section-description {
-    @apply text-lg text-muted-foreground mb-8 max-w-2xl mx-auto;
-  }
-
-  .feature-card {
-    @apply bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
-    border border-slate-100 hover:border-primary/20;
-  }
-
-  .pricing-card {
-    @apply bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
-    border border-slate-100 hover:border-primary/20 h-full;
-  }
-
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-100;
-  }
-}
-
-@layer components {
-  .hero-button {
-    @apply bg-primary rounded-xl px-6 py-3 text-white font-medium
-    transition-all hover:shadow-lg hover:shadow-primary/30 hover:scale-105;
-  }
-
-  .section-title {
-    @apply text-3xl md:text-4xl font-bold text-foreground mb-4;
-  }
-  
-  .section-description {
-    @apply text-lg text-muted-foreground mb-8 max-w-2xl mx-auto;
-  }
-
-  .feature-card {
-    @apply bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all
-    border border-slate-100 hover:border-primary/20;
-  }
-
-  .pricing-card {
-    @apply bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all
-    border border-slate-100 hover:border-primary/20 h-full;
-  }
-
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-100;
-  }
-}
+/* Remove ALL explicit bg-white in dark mode from previous definitions */
